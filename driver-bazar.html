@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Bazar - Professional Transportation Services</title>
+    <link rel="stylesheet" href="driver-bazar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav__brand">
+                    <h1 class="nav__logo" onclick="goHome()">Driver Bazar</h1>
+                    <p class="nav__tagline">Professional Transportation Services</p>
+                </div>
+                <div class="nav__menu">
+                    <ul class="nav__list">
+                        <li><a href="#" class="nav__link" onclick="goHome()">Home</a></li>
+                        <li><a href="#" class="nav__link">About</a></li>
+                        <li><a href="#" class="nav__link">Support</a></li>
+                        <li><a href="#" class="nav__link" onclick="logout()" style="color: #dc3545;">
+                             <i class="fas fa-sign-out-alt"></i> Logout
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="nav__toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="driver-bazar__hero">
+            <div class="container">
+                <button class="btn-back" onclick="goHome()">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+                <div class="hero__content">
+                    <h1>Driver Bazar</h1>
+                    <p>Choose from rides, hire a driver, or utilize assets</p>
+                </div>
+                <button class="btn btn-primary" onclick="onApplyDriver()">
+                        <i class="fas fa-user-tie"></i>
+                        Register as Driver
+                </button>
+                <button class="btn btn-success" onclick="onUtilizeVehicle()">
+                        <i class="fas fa-car"></i>
+                        Register as Private Owner
+                </button>
+
+                <button class="btn btn-success" onclick="onRegisterFleetBusiness()">
+                        <i class="fas fa-car"></i>
+                        Register as Fleet Business
+                </button>
+            </div>
+        </section>
+
+        <!-- Service Selection -->
+        <section class="service__selection">
+            <div class="container">
+                <h2>Choose Your Service</h2>
+                <div class="service__options">
+                    <!-- Service Option: Book a Service -->
+                    <div class="service__option" data-service="service" onclick="selectService('service')">
+                        <div class="option__icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Book a Service</h3>
+                        <p>Schedule transportation services with professional drivers</p>
+                        <span class="option__price">From $15/hr</span>
+                    </div>
+
+                    <!-- FIX: Added hire-driver option -->
+                    <div class="service__option" data-service="hire-driver" onclick="selectService('hire-driver')">
+                        <div class="option__icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Hire a Driver</h3>
+                        <p>Find professional drivers for your vehicle</p>
+                        <span class="option__price">From $12/hr</span>
+                    </div>
+
+                    <!-- Service Option: Utilize Assets -->
+                    <div class="service__option" data-service="assets" onclick="selectService('assets')">
+                        <div class="option__icon">
+                            <i class="fas fa-toolbox"></i>
+                        </div>
+                        <h3>Utilize Assets</h3>
+                        <p>List your drivers or vehicles for rental opportunities</p>
+                        <span class="option__price">Earn Money</span>
+                    </div>
+                </div>
+
+               
+                </div>
+            </div>
+        </section>
+
+        <!-- Role Switcher + Dashboards (Hidden by default) -->
+        <section id="profile-switcher" class="profile__switcher" style="display: none;">
+            <div class="container">
+                <div class="role__bar">
+                    <!--<button class="btn btn-primary" onclick="onApplyDriver()">
+                        <i class="fas fa-user-tie"></i>
+                        Register as Driver
+                    </button>
+                    <button class="btn btn-success" onclick="onUtilizeVehicle()">
+                        <i class="fas fa-car"></i>
+                        Register as Private Owner
+                    </button>
+
+                     <button class="btn btn-success" onclick="onRegisterFleetBusiness()">
+                        <i class="fas fa-car"></i>
+                        Register as Fleet Business
+                    </button> -->
+
+                    <div class="role__left">
+                        <span class="role__badge" id="current-role">Owner Mode</span>
+                        <div class="role__toggle">
+                            <button id="owner-btn" class="btn btn-sm btn-primary" onclick="switchRole('owner')">Owner</button>
+                            <button id="driver-btn" class="btn btn-sm btn-secondary" onclick="switchRole('driver')">Driver</button>
+                            <button id="fleetBusiness-btn" class="btn btn-sm btn-secondary" onclick="switchRole('fleetBusiness')">Fleet Business</button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section id="role-dashboards" class="role__dashboards" style="display: none;">
+            <div class="container">
+                <!-- Owner Dashboard -->
+                <div id="owner-panel" class="role__panel" style ="display: none;">
+					<div class="panel__header">
+						<h3>Owner Dashboard</h3>
+							<div class="panel__actions">
+								<button class="btn btn-secondary" onclick="openOwnerAssetModal('vehicle')"><i class="fas fa-car"></i> Add Vehicle</button>
+								<button class="btn btn-info" onclick="openOwnerManageAssetsModal()"><i class="fas fa-tasks"></i> Manage Assets</button>
+							</div>
+                    </div>
+                    <div class="cards__list">
+                        <div class="card">
+                            <h4>Revenue Analytics</h4>
+                            <p class="meta">Track your earnings and performance</p>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-secondary">View Reports</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Driver Dashboard -->
+                <div id="driver-panel" class="role__panel" style="display: none;">
+                    <h3 style="margin-bottom: var(--space-24); color: var(--color-text); font-size: var(--font-size-2xl);">Driver Dashboard</h3>
+                    <!--<div id="driver-controls" class="driver-controls" style="display: none;"> -->
+                        <label class="switch">
+                            <input type="checkbox" id="driver-online-toggle" onchange="toggleDriverStatus()">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="switch__label">Available</span>
+                        <label>Date: 
+                            <input type="date" name="date" style="margin-right:10px;">
+                        </label>
+                        <label>Hours of Operation:
+                            <input type="time" name="start_time"> to
+                            <input type="time" name="end_time" style="margin-right:10px;">
+                        </label>
+                        <label>Available To Drive For: 
+                            <select name="availability" style="margin-right:10px;">
+                            <option value="within_city">Within City</option>
+                            <option value="outside_city">Outside City Limits</option>
+                            <option value="overnight">Overnight</option>
+                            </select>
+                        </label>
+                    <h2 style="margin-bottom: var(--space-12); color: var(--color-text); font-size: var(--font-size-2xl);"></h2>
+                    <!--</div> -->
+                    <div class="cards__list">
+                        
+                        <div class="card">
+                            <h4>Ride Requests</h4>
+                            <p class="meta">2 pending requests nearby</p>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-primary">View Requests</button>
+                        </div>
+                        </div>
+                        <div class="card">
+                            <h4>Today's Earnings</h4>
+                            <p class="meta">$127.50 from 6 rides</p>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-secondary">View Details</button>
+                            </div>
+                        </div>
+                       
+                        <div class="card">
+                            <h4>Profile Rating</h4>
+                            <p class="meta">4.8 stars from 234 rides</p>
+                            <div class="actions">
+                                <button class="btn btn-sm btn-secondary">Update Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Fleet Business Dashboard -->
+                 <div id="fleet-business-panel" class="role__panel" style="display: none;">
+                    <div class="panel__header">
+                        <h3>Fleet Management Dashboard</h3>
+                        <div class="panel__actions">
+                            <button class="btn btn-secondary" onclick="openFleetAssetModal('driver')"><i class="fas fa-user-plus"></i> Add Driver</button>
+                            <button class="btn btn-secondary" onclick="openFleetAssetModal('vehicle')"><i class="fas fa-car"></i> Add Vehicle</button>
+                            <!-- NEW: Manage Assets button for Fleet -->
+                            <button class="btn btn-info" onclick="openFleetManageAssetsModal()"><i class="fas fa-tasks"></i> Manage Assets</button>
+                        </div>
+                    </div>
+
+                    <div class="fleet__section">
+                        <h4><i class="fas fa-concierge-bell"></i> Incoming Ride Requests</h4>
+                        <div id="fleet-requests-list" class="cards__list requests">
+                            <!-- Ride requests will be rendered here by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Booking Section -->
+        <section class="booking__section">
+            <div class="booking__container">
+                <!-- Left Panel -->
+                <div class="booking__panel">
+                    <!-- Progress Steps -->
+                    <div class="progress__steps">
+                        <div class="step__indicator" id="step1">
+                            <div class="step__circle">1</div>
+                            <span class="step__label" id="step1-label">Service Details</span>
+                        </div>
+                        <div class="step__indicator" id="step2">
+                            <div class="step__circle">2</div>
+                            <span class="step__label" id="step2-label">Service Type</span>
+                        </div>
+                        <div class="step__indicator" id="step3">
+                            <div class="step__circle">3</div>
+                            <span class="step__label" id="step3-label">Select Provider</span>
+                        </div>
+                        <div class="step__indicator" id="step4">
+                            <div class="step__circle">4</div>
+                            <span class="step__label" id="step4-label">Confirm</span>
+                        </div>
+                    </div>
+
+                    <!-- Step Content -->
+                    <div class="step__content">
+                        <!-- Step 1: Service Details -->
+                        <div class="step__panel active" id="step1-panel">
+                            <!-- Service Booking Section -->
+                            <div class="service-section active" id="service-section">
+                                <h3>Service Details</h3>
+                                <div class="input__group">
+                                    <div class="input__icon pickup">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="input__wrapper">
+                                        <label>Service Location</label>
+                                        <input type="text" id="service-location" placeholder="Enter service location" 
+                                               oninput="updateServiceLocation(this.value)">
+                                    </div>
+                                </div>
+
+                                <div class="input__group">
+                                    <div class="input__icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="input__wrapper">
+                                        <label>Service Duration</label>
+                                        <select id="service-duration" onchange="updateServiceDuration(this.value)">
+                                            <option value="">Select duration</option>
+                                            <option value="2">2 hours</option>
+                                            <option value="4">4 hours</option>
+                                            <option value="8">8 hours (Full day)</option>
+                                            <option value="24">24 hours</option>
+                                            <option value="48">2 days</option>
+                                            <option value="72">3 days</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Assets Section -->
+                            <div class="service-section" id="assets-section">
+                                <h3>Provide Asset Information</h3>
+                                
+                                <!-- Mode Selector -->
+                                <div id="assets-mode-selector" class="assets__mode">
+                                    <button class="btn btn-primary" onclick="selectAssetsMode('driver')">
+                                        <i class="fas fa-user-tie"></i>
+                                        List Driver Profile
+                                    </button>
+                                    <button class="btn btn-success" onclick="selectAssetsMode('vehicle')">
+                                        <i class="fas fa-car"></i>
+                                        List Vehicle
+                                    </button>
+                                </div>
+
+                                <!-- Driver Form -->
+                                <div id="driver-form" class="assets__form" style="display: none;">
+                                    <h4>Driver Profile Information</h4>
+                                    <div class="form__row">
+                                        <input type="text" id="driver-name" placeholder="Full Name *" required>
+                                        <input type="tel" id="driver-phone" placeholder="Phone Number *" required>
+                                    </div>
+                                    <div class="form__row">
+                                        <select id="driver-experience" required>
+                                            <option value="">Experience *</option>
+                                            <option value="1">1 year</option>
+                                            <option value="2">2 years</option>
+                                            <option value="3">3-5 years</option>
+                                            <option value="6">6-10 years</option>
+                                            <option value="11">10+ years</option>
+                                        </select>
+                                        <input type="number" id="driver-rate" placeholder="Hourly Rate ($) *" required>
+                                    </div>
+                                    <div class="form__row">
+                                        <input type="text" id="driver-languages" placeholder="Languages Spoken">
+                                        <input type="text" id="driver-specialties" placeholder="Specialties (optional)">
+                                    </div>
+                                    <div class="assets__actions">
+                                        <button type="button" class="btn btn-secondary" onclick="hideAssetsForm()">Cancel</button>
+                                        <button type="button" class="btn btn-primary" onclick="saveDriver()">Save Driver Profile</button>
+                                    </div>
+                                </div>
+
+                                <!-- Vehicle Form -->
+                                <div id="vehicle-form" class="assets__form" style="display: none;">
+                                    <h4>Vehicle Listing Information</h4>
+                                    <div class="form__row">
+                                        <input type="text" id="vehicle-make" placeholder="Make *" required>
+                                        <input type="text" id="vehicle-model" placeholder="Model *" required>
+                                    </div>
+                                    <div class="form__row">
+                                        <select id="vehicle-year" required>
+                                            <option value="">Year *</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2022">2022</option>
+                                            <option value="2021">2021</option>
+                                            <option value="2020">2020</option>
+                                            <option value="2019">2019</option>
+                                            <option value="2018">2018</option>
+                                        </select>
+                                        <input type="text" id="vehicle-color" placeholder="Color *" required>
+                                    </div>
+                                    <div class="form__row">
+                                        <input type="number" id="vehicle-rate" placeholder="Daily Rate ($) *" required>
+                                        <input type="text" id="vehicle-plate" placeholder="License Plate *" required>
+                                    </div>
+                                    <div class="form__row">
+                                        <select id="vehicle-capacity">
+                                            <option value="">Seating Capacity</option>
+                                            <option value="2">2 passengers</option>
+                                            <option value="4">4 passengers</option>
+                                            <option value="5">5 passengers</option>
+                                            <option value="7">7 passengers</option>
+                                            <option value="8">8+ passengers</option>
+                                        </select>
+                                        <select id="vehicle-type">
+                                            <option value="">Vehicle Type</option>
+                                            <option value="sedan">Sedan</option>
+                                            <option value="suv">SUV</option>
+                                            <option value="hatchback">Hatchback</option>
+                                            <option value="luxury">Luxury</option>
+                                            <option value="van">Van</option>
+                                        </select>
+                                    </div>
+                                    <div class="form__row">
+                                        <input type="text" id="vehicle-photos" placeholder="Photo URLs (comma-separated, optional)">
+                                    </div>
+                                    <div id="vehicle-photo-previews" class="photo__previews"></div>
+                                    <div class="assets__actions">
+                                        <button type="button" class="btn btn-secondary" onclick="hideAssetsForm()">Cancel</button>
+                                        <button type="button" class="btn btn-success" onclick="saveVehicle()">Save Vehicle Listing</button>
+                                    </div>
+                                </div>
+
+                                <!-- My Assets List -->
+                                <div class="assets__saved">
+                                    <h4>Your Assets</h4>
+                                    <div id="my-assets-list" class="myassets__list">
+                                        <!-- Dynamic content -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step Navigation -->
+                            <div class="step__actions">
+                                <button class="btn btn-secondary" disabled>Previous</button>
+                                <button id="step1-next" class="btn btn-primary" onclick="nextStep()" disabled>Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Service Type -->
+                        <div class="step__panel" id="step2-panel">
+                            <h3>Select Service Type & Schedule</h3>
+
+                            <!-- Service Type Selection -->
+                            <div class="service-type-selection">
+                                <h4>Choose Service Type</h4>
+                                <div class="service-type-options">
+                                    <label class="service-type-option">
+                                        <input type="radio" name="serviceType" value="driver-only" onchange="updateServiceType('driver-only')">
+                                        <div class="option-content">
+                                            <i class="fas fa-user-tie"></i>
+                                            <span>Driver Only</span>
+                                            <p>Hire a professional driver to use with your vehicle</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="service-type-option">
+                                        <input type="radio" name="serviceType" value="driver-with-vehicle" onchange="updateServiceType('driver-with-vehicle')">
+                                        <div class="option-content">
+                                            <i class="fas fa-car"></i>
+                                            <span>Driver + Vehicle</span>
+                                            <p>Complete transportation service with driver and vehicle</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Schedule Section -->
+                            <div class="schedule__section">
+                                <div class="calendar__wrapper">
+                                    <label>Select Date</label>
+                                    <div class="calendar">
+                                        <div class="calendar__header">
+                                            <button type="button" onclick="previousMonth()">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <span id="calendar-month-year"></span>
+                                            <button type="button" onclick="nextMonth()">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                        <div class="calendar__weekdays">
+                                            <div class="weekday">Sun</div>
+                                            <div class="weekday">Mon</div>
+                                            <div class="weekday">Tue</div>
+                                            <div class="weekday">Wed</div>
+                                            <div class="weekday">Thu</div>
+                                            <div class="weekday">Fri</div>
+                                            <div class="weekday">Sat</div>
+                                        </div>
+                                        <div class="calendar__grid" id="calendar-grid">
+                                            <!-- Dynamic calendar days -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="time__wrapper">
+                                    <label>Select Time</label>
+                                    <div class="time__slots" id="time-slots">
+                                        <!-- Dynamic time slots -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step__actions">
+                                <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                                <button id="step2-next" class="btn btn-primary" onclick="nextStep()" disabled>Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Select Provider -->
+                        <div class="step__panel" id="step3-panel">
+                            <h3 id="step3-title">Select Provider</h3>
+
+                            <!-- Loading -->
+                            <div id="drivers-loading" class="drivers__loading" style="display: none;">
+                                <div class="loading__spinner"></div>
+                                <p>Finding available providers...</p>
+                            </div>
+
+                            <!-- Driver Only Section -->
+                            <div id="drivers-only-section" class="provider-section">
+                                <div id="drivers-list" class="drivers__list">
+                                    <!-- Dynamic driver content -->
+                                </div>
+                            </div>
+
+                            <!-- Driver with Vehicle Section -->
+                            <div id="drivers-with-vehicle-section" class="provider-section">
+                                <div id="hire-drivers-list" class="hire-drivers__list">
+                                    <!-- Dynamic hire driver content -->
+                                </div>
+                            </div>
+
+                            <div class="step__actions">
+                                <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                                <button id="step3-next" class="btn btn-primary" onclick="nextStep()" disabled>Next</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Confirmation -->
+                        <div class="step__panel" id="step4-panel">
+                            <h3>Confirm Your Booking</h3>
+                            <div id="booking-summary" class="booking__summary">
+                                <!-- Dynamic booking summary -->
+                            </div>
+                            <div class="step__actions">
+                                <button class="btn btn-secondary" onclick="previousStep()">Previous</button>
+                                <button class="btn btn-success" onclick="confirmBooking()">Confirm Booking</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Success -->
+                        <div class="step__panel" id="step5-panel">
+                            <div class="success__content">
+                                <div class="success__icon">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <h3>Booking Confirmed!</h3>
+                                <div id="booking-success-message">
+                                    <!-- Dynamic success message -->
+                                </div>
+                                <div class="success__actions">
+                                    <button class="btn btn-primary" onclick="trackBooking()">Track Booking</button>
+                                    <button class="btn btn-secondary" onclick="goHome()">Book Another</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Map -->
+                <div class="map__panel">
+                    <div class="map__container">
+                        <div class="map__placeholder">
+                            <div class="map__content">
+                                <h4>Interactive Map</h4>
+                                <div class="map__legend">
+                                    <h4>Legend</h4>
+                                    <div class="legend__items" id="legend-items">
+                                        <!-- Dynamic legend content -->
+                                    </div>
+                                </div>
+
+                                <div class="quick__locations">
+                                    <h4>Popular Locations</h4>
+                                    <div class="location__buttons" id="location-buttons">
+                                        <!-- Dynamic location buttons -->
+                                    </div>
+                                </div>
+
+                                <p style="margin-top: var(--space-32); color: var(--color-text-secondary);">
+                                    <strong>Map Integration</strong><br>
+                                    Map preview (mock). Integrate with your preferred map SDK later.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <div id="driver-application-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Driver Application Form</h3>
+                <button class="modal-close" onclick="closeDriverApplicationModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="driver-application-form" onsubmit="submitDriverApplication(event)">
+                    <div class="form-section">
+                        <h4>Personal Information</h4>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="first-name">First Name *</label>
+                                <input type="text" id="first-name" name="firstName" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="last-name">Last Name *</label>
+                                <input type="text" id="last-name" name="lastName" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="dob">Date of Birth *</label>
+                                <input type="date" id="dob" name="dateOfBirth" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="sex">Sex *</label>
+                                <select id="sex" name="sex" required>
+                                    <option value="">Select Sex</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h4>Driving Information</h4>
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="experience">Driving Experience (years) *</label>
+                                <input type="number" id="experience" name="experience" min="1" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="languages">Languages Spoken *</label>
+                                <input type="text" id="languages" name="languages" required placeholder="e.g., English, Spanish">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeDriverApplicationModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- START: Add this Fleet Business Modal -->
+    <div id="fleet-business-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h3>Fleet Business Registration</h3>
+                <button class="modal-close" onclick="closeFleetBusinessModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="fleet-business-form" onsubmit="handleFleetBusinessSubmit(event)">
+                    <!-- Business Information Section -->
+                    <div class="form-section">
+                        <h4>Business Information</h4>
+                        <div class="form-row">
+                            <input type="text" name="businessName" placeholder="Business Name *" required>
+                            <input type="text" name="businessRegNumber" placeholder="Business Registration Number *" required>
+                        </div>
+                        <div class="form-row">
+                            <select name="businessType" required>
+                                <option value="">Business Type *</option>
+                                <option value="llc">LLC</option>
+                                <option value="sole-proprietorship">Sole Proprietorship</option>
+                                <option value="partnership">Partnership</option>
+                            </select>
+                            <input type="number" name="fleetSize" placeholder="Fleet Size (No. of vehicles) *" required>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="form-section">
+                        <h4>Contact Information</h4>
+                        <div class="form-row">
+                            <input type="text" name="contactPerson" placeholder="Contact Person Name *" required>
+                            <input type="text" name="designation" placeholder="Designation *" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="tel" name="businessPhone" placeholder="Business Phone *" required>
+                            <input type="email" name="businessEmail" placeholder="Business Email *" required>
+                        </div>
+                    </div>
+
+                    <!-- Services Section -->
+                    <div class="form-section">
+                        <h4>Services Offered</h4>
+                        <div class="form-row">
+                             <input type="text" name="operatingHours" placeholder="Operating Hours (e.g., 24/7, 9am-9pm) *" required>
+                             <input type="text" name="operatingAreas" placeholder="Operating Areas (e.g., Citywide, Specific zones) *" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeFleetBusinessModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Registration</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END: Fleet Business Modal -->
+    <!-- START: Add this Vehicle Utilization Modal -->
+    <div id="vehicle-utilization-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container large">
+            <div class="modal-header">
+                <h3>Register Your Vehicle (Private Owner)</h3>
+                <button class="modal-close" onclick="closeVehicleUtilizationModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="vehicle-utilization-form">
+                    <!-- Owner Information -->
+                    <div class="form-section">
+                        <h4>Owner Information</h4>
+                        <div class="form-row">
+                            <input type="text" name="ownerName" placeholder="Full Name *" required>
+                            <input type="tel" name="ownerPhone" placeholder="Phone Number *" required>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Information -->
+                    <div class="form-section">
+                        <h4>Vehicle Information</h4>
+                        <div class="form-row">
+                            <input type="text" name="vehicleMake" placeholder="Vehicle Make (e.g., Toyota) *" required>
+                            <input type="text" name="vehicleModel" placeholder="Vehicle Model (e.g., Camry) *" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="number" name="vehicleYear" placeholder="Year *" required>
+                            <input type="text" name="vehiclePlate" placeholder="License Plate *" required>
+                        </div>
+                    </div>
+
+                    <!-- Driver Details -->
+                    <div class="form-section">
+                        <h4>Driver Details</h4>
+                        <div class="form-row">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="ownerIsDriver" onchange="toggleDriverDetails(this.checked)">
+                                <span>I will be the driver of this vehicle.</span>
+                            </label>
+                        </div>
+                        <div id="driver-details-section" style="display: none;">
+                            <div class="form-row">
+                                <input type="text" name="driverName" placeholder="Driver's Full Name">
+                                <input type="tel" name="driverPhone" placeholder="Driver's Phone Number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeVehicleUtilizationModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit Vehicle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END: Vehicle Utilization Modal -->
+      
+    <!-- NEW: Fleet Manage Assets Modal -->
+    <div id="fleet-manage-assets-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Manage Fleet Assets for Rent</h3>
+                <button class="modal-close" onclick="closeFleetManageAssetsModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div id="fleet-manageable-vehicles-list">
+                    <!-- Fleet's vehicles will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Assets Modal (for Private Owner) -->
+    <div id="manage-assets-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h3>Manage Your Assets</h3>
+                <button class="modal-close" onclick="closeManageAssetsModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div id="manage-assets-main-view">
+                    <h4>Your Registered Vehicles</h4>
+                    <div id="owner-vehicles-list" class="myassets__list">
+                        <!-- Vehicle list will be rendered here -->
+                    </div>
+                </div>
+                <div id="manage-assets-availability-view" style="display: none;">
+                    <button class="btn btn-sm btn-secondary" onclick="showMainAssetView()"><i class="fas fa-arrow-left"></i> Back to Assets</button>
+                    <h4 id="availability-vehicle-title" style="margin-top: var(--space-16);">Set Availability</h4>
+                    <div class="availability-setter">
+                        <div class="calendar__wrapper">
+                            <div class="calendar" id="asset-calendar">
+                                <!-- Calendar for assets will be rendered here -->
+                            </div>
+                        </div>
+                        <div class="time__wrapper">
+                            <label>Select Available Time Slots for the selected date</label>
+                            <div class="time__slots" id="asset-time-slots">
+                                <!-- Time slots for assets will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fleet Asset Management Modal (for adding assets) -->
+    <div id="fleet-asset-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="fleet-asset-modal-title">Manage Asset</h3>
+                <button class="modal-close" onclick="closeFleetAssetModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <!-- Driver Form for Fleet -->
+                <div id="fleet-driver-form-section" style="display: none;">
+                    <h4>Add a New Driver to Your Fleet</h4>
+                    <div class="form-row">
+                        <input type="text" id="fleet-driver-name" placeholder="Full Name *" required>
+                        <input type="tel" id="fleet-driver-phone" placeholder="Phone Number *" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="number" id="fleet-driver-experience" placeholder="Experience (years) *" required>
+                        <input type="number" id="fleet-driver-rate" placeholder="Hourly Rate ($) *" required>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="saveFleetDriver()">Add Driver</button>
+                </div>
+                <!-- Vehicle Form for Fleet -->
+                <div id="fleet-vehicle-form-section" style="display: none;">
+                    <h4>Add a New Vehicle to Your Fleet</h4>
+                    <div class="form-row">
+                        <input type="text" id="fleet-vehicle-make" placeholder="Make *" required>
+                        <input type="text" id="fleet-vehicle-model" placeholder="Model *" required>
+                    </div>
+                     <div class="form-row">
+                        <input type="text" id="fleet-vehicle-year" placeholder="Year *" required>
+                        <input type="text" id="fleet-vehicle-plate" placeholder="License Plate *" required>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="saveFleetVehicle()">Add Vehicle</button>
+                </div>
+                <hr style="margin: var(--space-24) 0;">
+                <h4>Your Fleet Assets</h4>
+                <div id="fleet-assets-list" class="myassets__list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ride Assignment Modal -->
+    <div id="ride-assignment-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-container" style="max-width: 1000px;">
+            <div class="modal-header">
+                <h3>Assign Assets for Ride Request</h3>
+                <button class="modal-close" onclick="closeRideAssignmentModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="assignment__layout">
+                    <div class="assignment__col">
+                        <h4>Ride Details</h4>
+                        <div id="assignment-ride-details"></div>
+                    </div>
+                    <div class="assignment__col">
+                        <h4>Select Available Driver</h4>
+                        <div id="assignment-driver-list" class="assignment__list"></div>
+                    </div>
+                    <div class="assignment__col">
+                        <h4>Select Available Vehicle</h4>
+                        <div id="assignment-vehicle-list" class="assignment__list"></div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeRideAssignmentModal()">Cancel</button>
+                    <button id="assign-ride-btn" class="btn btn-primary" onclick="confirmRideAssignment()">Assign to Ride</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Modals: Driver Application, Vehicle Utilization, Fleet Business Registration -->
+    <!-- ... (Keep all other modals as they are) ... -->
+
+    <div class="loading-overlay">
+        <div class="loading__spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <script src="driver-bazar.js"></script>
+</body>
+</html>

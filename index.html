@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetBazCo - Your Service Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: #007bff;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+        }
+
+        /* Services Section */
+        .services-section {
+            padding: 3rem 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .section-description {
+            text-align: center;
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        /* Main Services Grid - FORCED 4 COLUMNS IN ONE ROW */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .service-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .service-btn:hover {
+            background: #0056b3;
+        }
+
+        /* Sub Services Section */
+        .sub-services {
+            display: none;
+            padding: 2rem 0;
+            border-top: 1px solid #ddd;
+            margin-top: 2rem;
+        }
+
+        .sub-services-section h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .sub-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sub-service-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 1rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .sub-service-card:hover {
+            background: #e9ecef;
+        }
+
+        .sub-service-icon {
+            font-size: 1.8rem;
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-service-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .sub-service-card p {
+            color: #666;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .sub-service-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .sub-service-btn:hover {
+            background: #1e7e34;
+        }
+
+        /* Special styling for external link buttons (like DriverBazar) */
+        .sub-service-link-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .sub-service-link-btn:hover {
+            background: #138496;
+        }
+
+        .sub-service-link-btn i {
+            font-size: 0.7rem;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 1.5rem auto 0;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #545b62;
+        }
+
+        .back-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* Why Choose Section */
+        .why-choose {
+            background: #f8f9fa;
+            padding: 3rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: white;
+            padding: 3rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            color: #007bff;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .contact-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        /* Responsive - Stack on mobile */
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .service-card {
+                padding: 1rem;
+            }
+            
+            .service-card h3 {
+                font-size: 0.9rem;
+            }
+            
+            .service-card p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-network-wired"></i> Welcome to NETBAZCO</h1>
+            <p class="subtitle">Your one stop shop to find services in your area</p>
+        </div>
+    </header>
+
+    <!-- Main Services Section -->
+    <section class="services-section">
+        <div class="container">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-description">Professional services at your fingertips</p>
+            
+            <!-- Main Services Grid - 4 columns in one row -->
+            <div id="services-grid" class="services-grid">
+                <!-- Services will be dynamically loaded here -->
+            </div>
+
+            <!-- Sub Services Container -->
+            <div id="sub-services" class="sub-services">
+                <!-- Sub-services will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose NetBazCo Section -->
+    <section class="why-choose">
+        <div class="container">
+            <h2 class="section-title">Why Choose NetBazCo?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Verified Professionals</h3>
+                    <p>All service providers are thoroughly vetted and verified for your safety and peace of mind.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24/7 Availability</h3>
+                    <p>Book services anytime, anywhere. Our platform is available round the clock for your convenience.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Quality Guaranteed</h3>
+                    <p>We ensure high-quality service delivery with our rating system and customer feedback process.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Customer Support</h3>
+                    <p>Our dedicated support team is always ready to help you with any questions or concerns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-description">Get in touch with our team for any inquiries or support.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h4>Address</h4>
+                    <p>123 Service Street, Business District, NY 10001</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4>Phone</h4>
+                    <p>+1 (555) 123-4567</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h4>Email</h4>
+                    <p>support@netbazco.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 NetBazCo. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>

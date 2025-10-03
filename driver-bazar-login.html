@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Driver Bazar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #007bff;
+            --color-primary-dark: #0056b3;
+            --color-secondary: #6c757d;
+            --color-success: #28a745;
+            --color-danger: #dc3545;
+            --color-white: #ffffff;
+            --color-gray-50: #f8f9fa;
+            --color-gray-200: #e9ecef;
+            --color-gray-600: #6c757d;
+            --color-gray-800: #343a40;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            --shadow-md: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            --radius-md: 0.375rem;
+            --radius-lg: 0.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+        }
+
+        .login-form {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--color-gray-800);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--color-gray-200);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-gray-600);
+        }
+
+        .input-group .form-control {
+            padding-left: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--color-gray-600);
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--color-primary);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-check-input {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .form-check-label {
+            color: var(--color-gray-600);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--color-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--color-danger);
+            color: var(--color-danger);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .success-message {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid var(--color-success);
+            color: var(--color-success);
+            padding: 10px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--color-gray-200);
+        }
+
+        .divider span {
+            background: var(--color-white);
+            padding: 0 15px;
+            color: var(--color-gray-600);
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            background: var(--color-gray-50);
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .login-footer p {
+            color: var(--color-gray-600);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .login-footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-credentials {
+            background: rgba(0, 123, 255, 0.1);
+            border: 1px dashed var(--color-primary);
+            padding: 15px;
+            border-radius: var(--radius-md);
+            margin-bottom: 20px;
+        }
+
+        .demo-credentials h4 {
+            color: var(--color-primary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .demo-credentials p {
+            color: var(--color-gray-800);
+            font-size: 0.85rem;
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .login-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="service-icon">
+                <i class="fas fa-car"></i>
+            </div>
+            <h1>Driver Bazar Login</h1>
+            <p>Sign in to access professional driving services</p>
+        </div>
+
+        <div class="login-form">
+            <!-- Demo Credentials Box -->
+            <div class="demo-credentials">
+                <h4><i class="fas fa-info-circle"></i> Demo Credentials</h4>
+                <p><strong>Phone:</strong> 4698781686</p>
+                <p><strong>Password:</strong> sumit</p>
+            </div>
+
+            <!-- Error/Success Messages -->
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
+            </div>
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i> Login successful! Redirecting...
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="phone">Phone Number</label>
+                    <div class="input-group">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input 
+                            type="tel" 
+                            id="phone" 
+                            name="phone" 
+                            class="form-control" 
+                            placeholder="Enter 10-digit phone number"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <i class="fas fa-eye password-toggle" id="passwordToggle" onclick="togglePassword()"></i>
+                    </div>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="rememberMe" class="form-check-input">
+                    <label for="rememberMe" class="form-check-label">Remember me</label>
+                </div>
+
+                <button type="submit" id="loginBtn" class="btn btn-primary">
+                    <span id="btnText">Sign In</span>
+                </button>
+
+                <button type="button" class="btn btn-secondary" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <button class="btn btn-secondary" onclick="loginAsGuest()">
+                <i class="fas fa-user"></i> Continue as Guest
+            </button>
+        </div>
+
+        <div class="login-footer">
+            <p>Don't have an account? <a href="#">Sign up</a></p>
+            <p><a href="#">Forgot password?</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Simulated user database
+        const users = [
+            { phone: '4698781686', password: 'sumit', name: 'Prof.Majumdar' },
+            { phone: '4698781686', password: 'user123', name: 'Test User' },
+            { phone: '4698781686', password: 'driver123', name: 'Majumdar Driver' }
+        ];
+
+        // Check if already logged in
+        window.onload = function() {
+            const isLoggedIn = sessionStorage.getItem('driverBazarLoggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = 'driver-bazar.html';
+            }
+        };
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const btnText = document.getElementById('btnText');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            const successMessage = document.getElementById('successMessage');
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            // Clear previous messages
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+
+            // Validate phone number
+            if (!/^\d{10}$/.test(phone)) {
+                errorText.textContent = 'Please enter a valid 10-digit phone number';
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Show loading state
+            loginBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading-spinner"></span> Signing in...';
+
+            // Simulate API call
+            setTimeout(() => {
+                // Check credentials
+                const user = users.find(u => u.phone === phone && u.password === password);
+
+                if (user) {
+                    // Success
+                    successMessage.classList.add('show');
+                    
+                    // Store login session
+                    sessionStorage.setItem('driverBazarLoggedIn', 'true');
+                    sessionStorage.setItem('driverBazarUser', JSON.stringify({
+                        phone: user.phone,
+                        name: user.name
+                    }));
+
+                    // If remember me is checked, store in localStorage
+                    if (rememberMe) {
+                        localStorage.setItem('driverBazarPhone', phone);
+                    }
+
+                    // Redirect to driver-bazar page
+                    setTimeout(() => {
+                        window.location.href = 'driver-bazar.html';
+                    }, 1500);
+                } else {
+                    // Error
+                    errorText.textContent = 'Invalid phone number or password';
+                    errorMessage.classList.add('show');
+                    loginBtn.disabled = false;
+                    btnText.textContent = 'Sign In';
+                }
+            }, 1500);
+        }
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('passwordToggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function loginAsGuest() {
+            sessionStorage.setItem('driverBazarLoggedIn', 'true');
+            sessionStorage.setItem('driverBazarUser', JSON.stringify({
+                phone: 'Guest',
+                name: 'Guest User'
+            }));
+            window.location.href = 'driver-bazar.html';
+        }
+
+        // Auto-fill remembered phone
+        const rememberedPhone = localStorage.getItem('driverBazarPhone');
+        if (rememberedPhone) {
+            document.getElementById('phone').value = rememberedPhone;
+            document.getElementById('rememberMe').checked = true;
+        }
+    </script>
+</body>
+</html>
